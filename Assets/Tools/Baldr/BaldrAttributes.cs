@@ -27,5 +27,7 @@ namespace BaldrAttributes
 
         public ButtonAttribute() { }
     }
+    [AttributeUsage(AttributeTargets.Field, Inherited = true)]
+    public class ReadOnlyAttribute : PropertyAttribute { }
 
 }

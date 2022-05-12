@@ -20,8 +20,7 @@ namespace DefaultNamespace
         }
         
         public MapItemsContainer mapItemsContainer;
-        public WallsContainer wallsContainer;
-        public Map map;
-        public MapBuilder mapBuilder;
+        public BlocksContainer blocksContainer;
+        public BlocksMap blocksMap;
     }
 }
