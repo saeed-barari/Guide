@@ -1,3 +1,4 @@
+using BaldrAttributes;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,11 +10,11 @@ public class PlayerController : MonoBehaviour
     bool cameraLock;
     //public bool lockMouse;
 
-    [Header("Parameters")]
+    [Group("Parameters")]
     [SerializeField] private float playerSpeed = 10f;
     [SerializeField] private float cameraSensitivityMultiplier = 1f;
 
-    [Header("Assignables")]
+    [Group("Assignables")]
     [SerializeField] private Camera fpsCam;
 
     
@@ -57,5 +58,11 @@ public class PlayerController : MonoBehaviour
         // TODO: Clamp the Vertical Rotation
         gameObject.transform.Rotate(0, horizMouse, 0);
         fpsCam.transform.Rotate(vertMouse, 0, 0);
+    }
+
+    [Button("Parameters")]
+    void PrintPosition()
+    {
+        Debug.Log(transform.position);
     }
 }
