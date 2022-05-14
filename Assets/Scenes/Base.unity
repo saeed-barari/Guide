@@ -643,9 +643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a750a6d4c3cdf446827198cddcbaef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lockMouse: 0
   playerSpeed: 10
-  cameraSensitivityMultiplier: 1
+  cameraSensitivityMultiplier: 2
   fpsCam: {fileID: 2036702955}
 --- !u!54 &1776860199
 Rigidbody:
@@ -660,7 +659,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!136 &1776860200
@@ -670,7 +669,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1776860197}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 194a4e9a411eb70499c8dfdcd4b9cc13, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
