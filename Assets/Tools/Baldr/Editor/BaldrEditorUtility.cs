@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -15,6 +16,22 @@ namespace Baldr.Editor
             return type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         }
 
+        public static IEnumerable<SerializedProperty> GetChildren(this SerializedProperty serializedProperty)
+        {
+            SerializedProperty currentProperty = serializedProperty.Copy();
+            // SerializedProperty nextSiblingProperty = serializedProperty.Copy();
+            // nextSiblingProperty.NextVisible(false);
+ 
+            do
+            {
+                // if (SerializedProperty.EqualContents(currentProperty, nextSiblingProperty))
+                //     break;
+
+                yield return currentProperty.Copy();
+            }
+            while (currentProperty.NextVisible(false));
+        }
+        
         public static object DrawUnknownType(FieldInfo fieldInfo, object obj)
         {
             try
