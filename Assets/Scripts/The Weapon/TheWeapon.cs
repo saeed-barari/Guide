@@ -32,20 +32,20 @@ public class TheWeapon : MonoBehaviour
     }
 
     void Update() {
-        // Shoot
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
-            Shoot();
-        }
-        //reload
-        if (Input.GetKeyDown(KeyCode.R)) {
-            StartCoroutine(Reload());
-        }
+        //// Shoot
+        //if (Input.GetKeyDown(KeyCode.Mouse0)) {
+        //    Shoot();
+        //}
+        ////reload
+        //if (Input.GetKeyDown(KeyCode.R)) {
+        //    StartReload();
+        //}
         timeSinceLastShot += Time.deltaTime;
         //Debug.Log(timeSinceLastShot.ToString());
         ammoText.text = "Ammo: " + currentAmmo.ToString();
     }
 
-    void Shoot() {
+    public void Shoot() {
         if (currentAmmo > 0) {
             if (CanShoot()) {
                 m_anim.SetTrigger("Shoot");
@@ -58,6 +58,10 @@ public class TheWeapon : MonoBehaviour
                 timeSinceLastShot = 0f;
             }
         }
+    }
+
+    public void StartReload() {
+        StartCoroutine(Reload());
     }
 
     private IEnumerator Reload() {
