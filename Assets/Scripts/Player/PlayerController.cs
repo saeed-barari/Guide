@@ -6,8 +6,8 @@ public class PlayerController : MonoBehaviour
 
     //Invisible Variables
     Rigidbody player_rb;
-    bool movementLock;
-    bool cameraLock;
+    public bool movementLock;
+    public bool cameraLock;
     //public bool lockMouse;
 
     [Group("Parameters")]
