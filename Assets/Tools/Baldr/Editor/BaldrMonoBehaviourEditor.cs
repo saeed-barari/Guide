@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BaldrAttributes;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
+using UnityEngine.Events;
 
 #endregion
 
@@ -22,9 +25,9 @@ namespace Baldr.Editor
         private static string _lastHeaderGroupName = string.Empty;
 
 
-        private static readonly Dictionary<string, bool> _headerGroupsExpanded = new();
+        private static readonly Dictionary<string, AnimBool> _headerGroupsExpanded = new();
         private static bool _insideHeaderGroup;
-
+        
         private Dictionary<string, List<ToDraw>> _toDrawList = new();
 
         public override void OnInspectorGUI()
@@ -84,17 +87,17 @@ namespace Baldr.Editor
                 }
 
                 BeginHeaderGroup(label);
-                if (CanDrawProperty())
+                GUILayout.BeginVertical(BaldrEditorStyles.InnerBox);
+                if (EditorGUILayout.BeginFadeGroup(_headerGroupsExpanded[label].faded))
                 {
-                    // Debug.Log(_headerGroupsExpanded.ContainsKey(_lastHeaderGroupName) ?  _headerGroupsExpanded[_lastHeaderGroupName] : "empty");
-                    GUILayout.BeginVertical(BaldrEditorStyles.InnerBox);
                     foreach (var toDraw in _toDrawList[label])
                         if (toDraw.property is not null)
                             EditorGUILayout.PropertyField(toDraw.property, true);
                         else if (toDraw.methodButton is not null)
                             DrawButtonIfPossible(toDraw.methodButton);
-                    GUILayout.EndVertical();
                 }
+                EditorGUILayout.EndFadeGroup();
+                GUILayout.EndVertical();
 
                 EndHeaderGroup();
             }
@@ -151,20 +154,25 @@ namespace Baldr.Editor
         private static bool CanDrawProperty()
         {
             return _lastHeaderGroupName == string.Empty || !_headerGroupsExpanded.ContainsKey(_lastHeaderGroupName) ||
-                   _headerGroupsExpanded[_lastHeaderGroupName];
+                   _headerGroupsExpanded[_lastHeaderGroupName].target;
         }
 
 
-        private static void BeginHeaderGroup(string label)
+        private void BeginHeaderGroup(string label)
         {
             _lastHeaderGroupName = label;
             GUILayout.BeginVertical(EditorStyles.helpBox);
+
+            if (!_headerGroupsExpanded.ContainsKey(label))
+            {
+                var animBool = new AnimBool(true);
+                animBool.valueChanged.AddListener(Repaint);
+                _headerGroupsExpanded.Add(label, animBool);
+            }
+            
             if (GUILayout.Button(label, BaldrEditorStyles.HeaderButton))
             {
-                if (!_headerGroupsExpanded.ContainsKey(label))
-                    _headerGroupsExpanded.Add(label, false);
-                else
-                    _headerGroupsExpanded[label] = !_headerGroupsExpanded[label];
+                _headerGroupsExpanded[label].target = !_headerGroupsExpanded[label].target;
             }
 
             GUILayout.Space(2);
