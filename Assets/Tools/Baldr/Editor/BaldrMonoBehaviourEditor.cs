@@ -90,6 +90,8 @@ namespace Baldr.Editor
                 GUILayout.BeginVertical(BaldrEditorStyles.InnerBox);
                 if (EditorGUILayout.BeginFadeGroup(_headerGroupsExpanded[label].faded))
                 {
+                    if(-_headerGroupsExpanded[label].faded > 0 && -_headerGroupsExpanded[label].faded < 1)
+                        Repaint();
                     foreach (var toDraw in _toDrawList[label])
                         if (toDraw.property is not null)
                             EditorGUILayout.PropertyField(toDraw.property, true);
