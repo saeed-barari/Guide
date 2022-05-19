@@ -6,8 +6,12 @@ public class PlayerController : MonoBehaviour
 
     //Invisible Variables
     Rigidbody player_rb;
+    [HideInInspector]
     public bool movementLock;
+    [HideInInspector]
     public bool cameraLock;
+    float vertMouse = 0f;
+    float horizMouse = 0f;
     //public bool lockMouse;
 
     [Group("Parameters")]
@@ -45,19 +49,21 @@ public class PlayerController : MonoBehaviour
     }
 
     void Move() {
-        float xMove = Input.GetAxis("Horizontal");
-        float zMove = Input.GetAxis("Vertical");
 
-        transform.Translate(playerSpeed * Vector3.forward * Time.deltaTime * zMove);
-        transform.Translate(playerSpeed * Vector3.right * Time.deltaTime * xMove);
+        transform.Translate(Vector3.right * Input.GetAxisRaw("Horizontal") * playerSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * Input.GetAxisRaw("Vertical") * playerSpeed * Time.deltaTime);
+
     }
 
     void LookAround() {
-        float vertMouse = -Input.GetAxis("Mouse Y")*cameraSensitivityMultiplier;
-        float horizMouse = Input.GetAxis("Mouse X")*cameraSensitivityMultiplier;
-        // TODO: Clamp the Vertical Rotation
-        gameObject.transform.Rotate(0, horizMouse, 0);
-        fpsCam.transform.Rotate(vertMouse, 0, 0);
+        horizMouse += Input.GetAxis("Mouse X")*cameraSensitivityMultiplier;
+        
+        vertMouse = vertMouse - Input.GetAxis("Mouse Y")*cameraSensitivityMultiplier;
+        
+        vertMouse = Mathf.Clamp(vertMouse, -80f, 85f);
+        // Debug.Log(vertMouse.ToString());
+        gameObject.transform.eulerAngles = new Vector3(0, horizMouse, 0);
+        fpsCam.transform.localEulerAngles = new Vector3(vertMouse, 0, 0);
     }
 
     [Button("Parameters")]
