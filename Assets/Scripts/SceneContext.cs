@@ -1,5 +1,6 @@
 ﻿using System;
 using Base;
+using Base.BlockSystem;
 using Base.MapItemTypes;
 using UnityEngine;
 
@@ -22,5 +23,6 @@ namespace DefaultNamespace
         public MapItemsContainer mapItemsContainer;
         public BlocksContainer blocksContainer;
         public BlocksMap blocksMap;
+        public PlayerController playerController;
     }
 }
