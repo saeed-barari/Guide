@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BaldrAttributes;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
@@ -45,12 +44,13 @@ namespace Baldr.Editor
 
             var iter = serializedObject.GetIterator();
             iter.NextVisible(true); // get inside object
-            iter.NextVisible(false); // pass through the disabled script reference
+            bool hasContent = iter.NextVisible(false); // pass through the disabled script reference
             DrawDisabledScriptField(); // render the disabled reference
 
             try
             {
-                DrawBaldrMonoBehaviourInspector(iter);
+                if(hasContent)
+                    DrawBaldrMonoBehaviourInspector(iter);
             }
             catch (Exception e)
             {
@@ -113,6 +113,8 @@ namespace Baldr.Editor
             
             foreach (var prop in serializedProperty.GetChildren())
             {
+                if(prop.IsUnityNull()) return;
+                
                 var field = _drawingtarget.GetType().GetField(prop.name,
                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 if (field == null) continue;

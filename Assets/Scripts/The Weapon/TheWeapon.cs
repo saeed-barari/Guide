@@ -1,6 +1,6 @@
-using BaldrAttributes;
 using UnityEngine;
 using System.Collections;
+using Baldr;
 using TMPro;
 public class TheWeapon : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class TheWeapon : MonoBehaviour
     Animator m_anim;
     float timeSinceLastShot;
 
-    private bool CanShoot() => !isReloading && timeSinceLastShot > 1f / (fireRate / 60f);
+    private bool CanShoot() => !isReloading && timeSinceLastShot > 1f / (fireRate / 60f) && currentAmmo > 0;
 
     void Start() {
         m_anim = GetComponent<Animator>();
@@ -45,19 +45,23 @@ public class TheWeapon : MonoBehaviour
         ammoText.text = "Ammo: " + currentAmmo.ToString();
     }
 
-    public void Shoot() {
-        if (currentAmmo > 0) {
-            if (CanShoot()) {
-                m_anim.SetTrigger("Shoot");
-                Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, maxDistance);
-                Target target = hit.transform.GetComponent<Target>();
-                if (target != null) {
-                    target.health = target.health - damage;
-                }
-                currentAmmo--;
-                timeSinceLastShot = 0f;
+    public void Shoot()
+    {
+        if (!CanShoot()) return;
+        
+        m_anim.SetTrigger("Shoot");
+
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, maxDistance))
+        {
+            Debug.Log($"Shot {hit.transform.name}");
+            var target = hit.transform.GetComponent<Target>();
+            if (target != null) {
+                target.health -= damage;
             }
         }
+        currentAmmo--;
+        timeSinceLastShot = 0f;
+        
     }
 
     public void StartReload() {

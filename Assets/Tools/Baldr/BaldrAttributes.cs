@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace BaldrAttributes
+namespace Baldr
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
     public class ButtonAttribute : PropertyAttribute

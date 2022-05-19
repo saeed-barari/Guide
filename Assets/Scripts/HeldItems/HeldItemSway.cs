@@ -1,4 +1,4 @@
-using BaldrAttributes;
+using Baldr;
 using UnityEngine;
 
 public class HeldItemSway : MonoBehaviour

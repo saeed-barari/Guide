@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BaldrAttributes;
+using Baldr;
 using Base.MapItemTypes;
 using DefaultNamespace;
 using Tools;
@@ -31,8 +31,8 @@ namespace Base
         [Button]
         public void AddNewPoint()
         {
-            var selectedPoint = blockPoints.Where(bp => bp.availableWayPoints.Count > 0).ToList().GetRandom();
-            AddPointAt(selectedPoint, selectedPoint.availableWayPoints.GetRandom());
+            var selectedPoint = blockPoints.Where(bp => bp.AvailableWayPoints.Count > 0).ToList().GetRandom();
+            AddPointAt(selectedPoint, selectedPoint.AvailableWayPoints.GetRandom());
         }
 
         private void AddPointAt(BlockPoint blockPoint, Base.BlockPoint.WayPoint waypoint)
@@ -55,15 +55,17 @@ namespace Base
                 if(Vector3.Distance(bp.transform.position, newBlockPoint.transform.position) > 3)
                     continue;
                 
-                var availableWayPoints = newBlockPoint.availableWayPoints;
+                var availableWayPoints = newBlockPoint.AvailableWayPoints;
                 
-                foreach (var wp in bp.availableWayPoints)
+                foreach (var wp in bp.AvailableWayPoints)
                 {
                     foreach (var newWp in availableWayPoints)
                     {
                         if (Vector3.Distance(newBlockPoint.TransformWayPoint(newWp), bp.TransformWayPoint(wp)) < 0.1f)
                         {
                             ConnectWayPoints(newWp, wp);
+                            newBlockPoint.UpdateView();
+                            bp.UpdateView();
                         }
                         
                     }

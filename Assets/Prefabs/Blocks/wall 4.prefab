@@ -110,17 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a79a0f9b9a42b99c75bffc409141a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  links:
-  - block: {fileID: 6406058959955234228}
-    position: {x: 0.5, y: 0, z: 0}
-    linkType: 1
-  - block: {fileID: 6406058959955234228}
-    position: {x: -0.5, y: 0, z: 0}
-    linkType: 1
-  - block: {fileID: 6406058959955234228}
-    position: {x: 0, y: 0, z: 0.5}
-    linkType: 1
-  - block: {fileID: 6406058959955234228}
-    position: {x: 0, y: 0, z: -0.5}
-    linkType: 1
-  coveringArea: {fileID: 5975995418839343207}
+  waypoints:
+  - {x: 0.5, y: 0, z: 0}
+  - {x: -0.5, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0.5}
+  - {x: 0, y: 0, z: -0.5}

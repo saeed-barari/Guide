@@ -20,3 +20,9 @@ MonoBehaviour:
   - {fileID: 6406058959955234228, guid: a942b20895a9ec2469e9103423eae367, type: 3}
   blockPointPrefabs: {fileID: 1743929259104011313, guid: 9dca3264f69cbe74fa8b8f7e35ca2af5,
     type: 3}
+  blockViewPosPairs:
+  - waypoints:
+    - {x: 0, y: 0, z: 0}
+    viewInfo:
+      view: {fileID: 0}
+      rotation: 0

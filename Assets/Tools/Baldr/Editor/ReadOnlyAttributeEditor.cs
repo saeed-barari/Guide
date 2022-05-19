@@ -1,5 +1,4 @@
-﻿using BaldrAttributes;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace Baldr.Editor
