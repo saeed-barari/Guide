@@ -52,8 +52,8 @@ namespace Base
             {
                 if(ReferenceEquals(bp, newBlockPoint))
                     continue;
-                if(Vector3.Distance(bp.transform.position, newBlockPoint.transform.position) > 3)
-                    continue;
+                // if(Vector3.Distance(bp.transform.position, newBlockPoint.transform.position) > 3)
+                //     continue;
                 
                 var availableWayPoints = newBlockPoint.AvailableWayPoints;
                 

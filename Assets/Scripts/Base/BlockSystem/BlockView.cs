@@ -46,7 +46,7 @@ namespace Base.MapItemTypes
             if(waypoints is null) return;
             foreach (var pos in waypoints)
             {
-                Gizmos.DrawSphere(transform.TransformPoint(pos + Vector3.up * 0.5f), 0.1f);
+                Gizmos.DrawSphere(transform.TransformPoint(pos + Vector3.up * transform.localScale.x * 0.2f), 0.1f);
             }
         }
 #endif
