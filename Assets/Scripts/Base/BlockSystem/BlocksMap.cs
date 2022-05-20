@@ -36,8 +36,8 @@ namespace Base
             if (Time.time - lastUpdateTime > config.reSpawnTime)
             {
                 lastUpdateTime = Time.time;
-                if(RemoveFarPassedBlocks() == true)
-                    SpawnNewBlock();
+                if(RemoveBehindBlock() == true)
+                    SpawnNewBlockForward();
             }
             if(Time.time - - last_passed_block_check > PASSED_BLOCK_CHECK_RATE)
             {
@@ -56,36 +56,49 @@ namespace Base
             }
         }
 
-        private bool RemoveFarPassedBlocks()
+        [Button]
+        private bool RemoveBehindBlock()
         {
-            for (int i = 0; i < _passedBlockPoints.Count; i++)
-            {
-                if(Vector3.Distance(_passedBlockPoints[i].transform.position, SceneContext.Instance.playerController.transform.position) > config.maxDistance)
+            var playerTransform = SceneContext.Instance.playerController.transform;
+            var playerPosition = playerTransform.position;
+            
+            var behindBlocks = blockPoints.Where(bp =>
+                Vector3.Distance(bp.transform.position, playerPosition) > config.maxDistance &&
+                Vector3.Dot(
+                    (bp.transform.position - playerPosition).normalized,
+                    playerTransform.forward) < 0).ToList();
+
+            if (behindBlocks.Count == 0) return false;
+            var removingBlock = behindBlocks.GetRandom();
+            
+            var bp = removingBlock;
+            Debug.Log($"removing {bp.name}");
+            
+            bp.ConnectedWayPoints
+                .Foreach(wp =>
                 {
-                    var bp = _passedBlockPoints[i];
-                    Debug.Log($"removing {bp.name}");
-                    
-                    bp.ConnectedWayPoints
-                        .Foreach(wp =>
-                        {
-                            var neighborNode = wp.ConnectedNode!;
-                            neighborNode.ConnectedNode = null; // removing connection
-                        });
+                    var neighborNode = wp.ConnectedNode!;
+                    neighborNode.ConnectedNode = null; // removing connection
+                });
 
-                    // remove
-                    blockPoints.Remove(bp);
-                    _passedBlockPoints.RemoveAt(i);
-                    Destroy(bp.gameObject);
+            // remove
+            blockPoints.Remove(bp);
+            Destroy(bp.gameObject);
 
-                    return true;
-                }
-            }
-            return false;
+            return true;
         }
 
-        private void SpawnNewBlock()
+        [Button]
+        private void SpawnNewBlockForward()
         {
-            var possibleBlocks = blockPoints.Where(bp => !_passedBlockPoints.Contains(bp)).ToList();
+            var playerTransform = SceneContext.Instance.playerController.transform;
+            
+            var possibleBlocks = blockPoints.Where(bp =>
+                Vector3.Distance(bp.transform.position, playerTransform.position) > config.maxDistance &&
+                Vector3.Dot(
+                    (bp.transform.position - playerTransform.position).normalized,
+                    playerTransform.forward) >= 0).ToList();
+            
             if (possibleBlocks.Count == 0)
             {
                 possibleBlocks = blockPoints;
